@@ -34,35 +34,36 @@ class MainWindow(QWidget):
         question_label.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         ratings = ["Satisfied", "Average", "Not Satisfied"]   
-        ratings_group = QButtonGroup(self)   
-        ratings_group.buttonClicked.connect(self.checkboxClicked)                 
+        # Create a QButtonGroup object for the ratings checkboxes
+        ratings_group = QButtonGroup(self)  
+        ratings_group.buttonClicked.connect(self.checkboxClicked) # Connect the buttonClicked signal to the checkboxClicked method                
 
         self.confirm_button = QPushButton("Confirm")
-        self.confirm_button.setEnabled(False)
-        self.confirm_button.clicked.connect(self.close)
+        self.confirm_button.setEnabled(False)  # Disable the confirm button until a checkbox is clicked
+        self.confirm_button.clicked.connect(self.close) # Connect the clicked signal to the close method
 
         # Organize the widgets into a layout
-        main_v_box = QVBoxLayout()
-        main_v_box.addWidget(header_label)
-        main_v_box.addWidget(question_label)
+        main_v_box = QVBoxLayout() # Create a QVBoxLayout main object
+        main_v_box.addWidget(header_label) # Add the header_label to the main layout
+        main_v_box.addWidget(question_label) # Add the question_label to the main layout
 
         # Create the QCheckBox objects, then add 
         # them to the QButtonGroup and the main layout
         for cb in range(len(ratings)):
-            rating_cb = QCheckBox(ratings[cb])
-            ratings_group.addButton(rating_cb)
-            main_v_box.addWidget(rating_cb)
+            rating_cb = QCheckBox(ratings[cb]) #create a checkbox for each rating in the ratings list
+            ratings_group.addButton(rating_cb) #add the checkbox to the button group
+            main_v_box.addWidget(rating_cb) #add the checkbox to the main layout
 
-        main_v_box.addWidget(self.confirm_button)
+        main_v_box.addWidget(self.confirm_button) #add the confirm_button to the main layout
 
         # Set the layout for the main window
-        self.setLayout(main_v_box)
+        self.setLayout(main_v_box) 
 
-    def checkboxClicked(self, button):
+    def checkboxClicked(self, button): # button is the checkbox that was clicked
         """Check if a QCheckBox in the QButtonGroup has
         been clicked."""
         print(button.text())
-        self.confirm_button.setEnabled(True)
+        self.confirm_button.setEnabled(True) #enable the confirm_button
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

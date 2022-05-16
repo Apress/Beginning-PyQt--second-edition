@@ -39,9 +39,9 @@ class MainWindow(QWidget):
         self.last_name_edit.textEdited.connect(self.clearText)
 
         # Create horizontal layout for names
-        name_h_box = QHBoxLayout()
-        name_h_box.addWidget(self.first_name_edit)
-        name_h_box.addWidget(self.last_name_edit) 
+        name_h_box = QHBoxLayout() # Create a horizontal layout 
+        name_h_box.addWidget(self.first_name_edit) # Add the first name edit
+        name_h_box.addWidget(self.last_name_edit)  # Add the last name edit
 
         # Create additional widgets to be added in the window
         gender_combo = QComboBox()

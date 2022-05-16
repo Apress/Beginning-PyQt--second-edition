@@ -34,38 +34,38 @@ class MainWindow(QWidget):
         # Create widgets for the left side of the window
         today_label = QLabel("• Today's Focus")
         today_label.setFont(QFont("Arial", 14))
-        self.today_tedit = QTextEdit()
+        self.today_tedit = QTextEdit() # QTextEdit is a multi-line text box 
 
         notes_label = QLabel("• Notes")
         notes_label.setFont(QFont("Arial", 14))
-        self.notes_tedit = QTextEdit()
+        self.notes_tedit = QTextEdit() # QTextEdit is a multi-line text box . Qlabel is parent of QTextEdit
 
         # Organize the left side widgets into a column 0
         # of the QGridLayout
-        self.main_grid = QGridLayout()
-        self.main_grid.addWidget(name_label, 0, 0)
-        self.main_grid.addWidget(today_label, 1, 0)
-        self.main_grid.addWidget(self.today_tedit, 2, 0, 3, 1)
-        self.main_grid.addWidget(notes_label, 5, 0)
-        self.main_grid.addWidget(self.notes_tedit, 6, 0, 3, 1)
+        self.main_grid = QGridLayout() # QGridLayout is a grid of widgets,it is a layout manager that organizes widgets in a grid layout row by row and column by column
+        self.main_grid.addWidget(name_label, 0, 0) # addWidget(widget, row, column, rowspan, columnspan) add name label widget to grid layout at position row 0, column 0
+        self.main_grid.addWidget(today_label, 1, 0) # addWidget(widget, row, column, rowspan, columnspan) add today label widget to grid layout at position row 1, column 0
+        self.main_grid.addWidget(self.today_tedit, 2, 0, 3, 1) # addWidget(widget, row, column, rowspan, columnspan) add today text edit widget to grid layout at position row 2, column 0, rowspan 4, columnspan 1
+        self.main_grid.addWidget(notes_label, 5, 0) # addWidget(widget, row, column, rowspan, columnspan) add notes label widget to grid layout at position row 6, column 0
+        self.main_grid.addWidget(self.notes_tedit, 6, 0, 1, 1,Qt.AlignmentFlag.AlignCenter) # addWidget(widget, row, column, rowspan, columnspan,alignment) add notes text edit widget to grid layout at position row 6, column 0, rowspan 3, columnspan 1
 
         # Create widgets for the right side of the window
-        today = QDate.currentDate().toString(Qt.DateFormat.ISODate)
-        date_label = QLabel(today)
+        today = QDate.currentDate().toString(Qt.DateFormat.ISODate) # QDate.currentDate() returns the current date as a QDate object and toString(Qt.DateFormat.ISODate) returns the date in ISO format
+        date_label = QLabel(today) #create a label widget with the current date
         date_label.setFont(QFont("Arial", 18))
         date_label.setAlignment(Qt.AlignmentFlag.AlignRight)
 
-        todo_label = QLabel("• To Do")
+        todo_label = QLabel("• To Do") 
         todo_label.setFont(QFont("Arial", 14))
 
         # Organize the right side widgets into columns 1 and 2
         # of the QGridLayout
-        self.main_grid.addWidget(date_label, 0, 2)
-        self.main_grid.addWidget(todo_label, 1, 1, 1, 2)
+        self.main_grid.addWidget(date_label, 0, 3) # addWidget(widget, row, column, rowspan, columnspan,alignment) add date label widget to grid layout at position row 0, column 3
+        self.main_grid.addWidget(todo_label, 1, 1, 1, 2) # addWidget(widget, row, column, rowspan, columnspan,alignment) add todo label widget to grid layout at position row 1, column 1, rowspan 1, columnspan 2
 
         # Create 7 rows, from indexes 2-8
-        for row in range(2, 9): 
-            item_cb = QCheckBox()
+        for row in range(2, 5): 
+            item_cb = QCheckBox() 
             item_edit = QLineEdit()
             self.main_grid.addWidget(item_cb, row, 1)
             self.main_grid.addWidget(item_edit, row, 2)
