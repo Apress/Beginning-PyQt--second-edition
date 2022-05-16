@@ -34,10 +34,22 @@ class MainWindow(QWidget):
         # Create widgets for the left side of the window
         today_label = QLabel("• Today's Focus")
         today_label.setFont(QFont("Arial", 14))
-        self.today_tedit = QTextEdit() # QTextEdit is a multi-line text box 
 
         notes_label = QLabel("• Notes")
         notes_label.setFont(QFont("Arial", 14))
+
+        """
+        The QTextEdit Widget
+        When a user needs an area for entering or editing more than one line of text at a time,
+        the QTextEdit class is well suited for modifying either plain or rich text and includes
+        built-in editing features, such as copy, paste, and cut. The widget can handle characters
+        or paragraphs of text. Paragraphs are simply long strings that are word-wrapped into the
+        widget and end with a newline character. QTextEdit is also useful for displaying lists,
+        images, and tables or providing an interface for displaying text using HTML.
+        """
+
+        self.today_tedit = QTextEdit() # QTextEdit is a multi-line text box 
+        
         self.notes_tedit = QTextEdit() # QTextEdit is a multi-line text box . Qlabel is parent of QTextEdit
 
         # Organize the left side widgets into a column 0
@@ -65,10 +77,11 @@ class MainWindow(QWidget):
 
         # Create 7 rows, from indexes 2-8
         for row in range(2, 5): 
-            item_cb = QCheckBox() 
-            item_edit = QLineEdit()
-            self.main_grid.addWidget(item_cb, row, 1)
-            self.main_grid.addWidget(item_edit, row, 2)
+            item_cb = QCheckBox(f"check{row-1}") #create a checkbox widget 
+            item_edit = QLineEdit() #create a line edit widget
+            item_edit.setPlaceholderText("Enter item here") #set the placeholder text of the line edit widget
+            self.main_grid.addWidget(item_cb, row, 1) # addWidget(widget, row, column, rowspan, columnspan,alignment) add checkbox widget to grid layout at position row 2, column 1
+            self.main_grid.addWidget(item_edit, row, 2) # addWidget(widget, row, column, rowspan, columnspan,alignment) add line edit widget to grid layout at position row 2, column 2
 
         # Set the layout for the main window
         self.setLayout(self.main_grid)
@@ -76,46 +89,47 @@ class MainWindow(QWidget):
     def saveWidgetValues(self):
         """Collect and save the values for the different widgets."""
         details = {"focus": self.today_tedit.toPlainText(),
-                   "notes": self.notes_tedit.toPlainText()}
+                   "notes": self.notes_tedit.toPlainText()} # toPlainText() returns the text of the widget as a plain text string
         remaining_todo = []
 
         # Check the values of the QCheckBox widgets
         for row in range(2, 9):
             # Retrieve the QLayoutItem object
-            item = self.main_grid.itemAtPosition(row, 1)
+            item = self.main_grid.itemAtPosition(row, 1) # itemAtPosition(row, column) returns the QLayoutItem object at the given row and column 1 of the grid layout
             # Retrieve the widget (QCheckBox)
-            widget = item.widget()
+            widget = item.widget() # widget() returns the @checkbox widget that is managed by the layout item
             if widget.isChecked() == False:
                 # Retrieve the QLayoutItem object
-                item = self.main_grid.itemAtPosition(row, 2)
+                item = self.main_grid.itemAtPosition(row, 2)  # returns the QLayoutItem object at the given row and column 2 of the grid layout
                 # Retrieve the widget (QLineEdit)
-                widget = item.widget()
-                text = widget.text()
+                widget = item.widget() # widget() returns the Qlineedit that is managed by the layout item
+                text = widget.text() # text() returns the text of the qlineedit widget
                 if text != "":
-                    remaining_todo.append(text)
+                    remaining_todo.append(text) #append the text of the qlineedit widget to the remaining_todo list
             # Save text from QLineEdit widgets
-            details["todo"] = remaining_todo
+            details["todo"] = remaining_todo # set the to_do key , value is the remaining_todo list
 
-        with open("details.txt", "w") as f:
-            f.write(json.dumps(details))
+        with open("details.txt", "w") as f: # open the details.txt file in write mode and store the file object in f variable
+            print(f"Saving details to file: {details}")
+            f.write(json.dumps(details)) # write the json.dumps(details) to the details.txt file , json.dumps() returns a string containing the JSON representation of the object passed as an argument to it
 
     def loadWidgetValuesFromFile(self):
         """Retrieve the user's previous values from the last session."""
         # Check if file exists first
         try:
-            with open("details.txt", "r") as f:
-                details = json.load(f)
+            with open("details.txt", "r") as f: # open the details.txt file in read mode and store the file object in f variable
+                details = json.load(f) # load the json.load(f) from the details.txt file , json.load() returns the Python object that was serialized as a JSON string
                 # Retrieve and set values for the widgets
-                self.today_tedit.setText(details["focus"])
-                self.notes_tedit.setText(details["notes"])
+                self.today_tedit.setText(details["focus"]) # set the text of the today text edit widget to the value of the focus key
+                self.notes_tedit.setText(details["notes"]) # set the text of the notes text edit widget to the value of the notes key
 
                 # Set the text for QLineEdit widgets 
-                for row in range(len(details["todo"])):
+                for row in range(len(details["todo"])): # for each item in the todo list
                     # Retrieve the QLayoutItem object
-                    item = self.main_grid.itemAtPosition(row + 2, 2)
+                    item = self.main_grid.itemAtPosition(row + 2, 2) # returns the today_edit widget at the given row and column 2 of the grid layout
                     # Retrieve the widget (QLineEdit)
-                    widget = item.widget()
-                    widget.setText(details["todo"][row])                    
+                    widget = item.widget() # widget() returns the Qlineedit that is managed by the layout item
+                    widget.setText(details["todo"][row]) # set the text of the today_edit Qlineedit widget to the value of the todo key
         except FileNotFoundError as error:
             # Create the file since it doesn't exist
             f = open("details.txt", "w")
