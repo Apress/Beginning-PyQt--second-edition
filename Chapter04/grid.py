@@ -4,6 +4,7 @@ Featured in "Beginning PyQt - A Hands-on Approach to GUI Programming, 2nd Ed."
 """
 
 # Import necessary modules
+from base64 import encode
 import sys, json
 from PyQt6.QtWidgets import (QApplication, QWidget, QLabel, 
     QLineEdit, QCheckBox, QTextEdit, QGridLayout) 
@@ -55,6 +56,7 @@ class MainWindow(QWidget):
         # Organize the left side widgets into a column 0
         # of the QGridLayout
         self.main_grid = QGridLayout() # QGridLayout is a grid of widgets,it is a layout manager that organizes widgets in a grid layout row by row and column by column
+        self.main_grid.setOriginCorner(Qt.Corner.TopLeftCorner) # setOriginCorner() sets the origin corner of the grid layout
         self.main_grid.addWidget(name_label, 0, 0) # addWidget(widget, row, column, rowspan, columnspan) add name label widget to grid layout at position row 0, column 0
         self.main_grid.addWidget(today_label, 1, 0) # addWidget(widget, row, column, rowspan, columnspan) add today label widget to grid layout at position row 1, column 0
         self.main_grid.addWidget(self.today_tedit, 2, 0, 3, 1) # addWidget(widget, row, column, rowspan, columnspan) add today text edit widget to grid layout at position row 2, column 0, rowspan 4, columnspan 1
@@ -76,7 +78,7 @@ class MainWindow(QWidget):
         self.main_grid.addWidget(todo_label, 1, 1, 1, 2) # addWidget(widget, row, column, rowspan, columnspan,alignment) add todo label widget to grid layout at position row 1, column 1, rowspan 1, columnspan 2
 
         # Create 7 rows, from indexes 2-8
-        for row in range(2, 5): 
+        for row in range(2, 10): 
             item_cb = QCheckBox(f"check{row-1}") #create a checkbox widget 
             item_edit = QLineEdit() #create a line edit widget
             item_edit.setPlaceholderText("Enter item here") #set the placeholder text of the line edit widget
@@ -97,7 +99,7 @@ class MainWindow(QWidget):
             # Retrieve the QLayoutItem object
             item = self.main_grid.itemAtPosition(row, 1) # itemAtPosition(row, column) returns the QLayoutItem object at the given row and column 1 of the grid layout
             # Retrieve the widget (QCheckBox)
-            widget = item.widget() # widget() returns the @checkbox widget that is managed by the layout item
+            widget = item.widget() # widget() returns the checkbox widget that is managed by the layout item
             if widget.isChecked() == False:
                 # Retrieve the QLayoutItem object
                 item = self.main_grid.itemAtPosition(row, 2)  # returns the QLayoutItem object at the given row and column 2 of the grid layout
@@ -111,6 +113,7 @@ class MainWindow(QWidget):
 
         with open("details.txt", "w") as f: # open the details.txt file in write mode and store the file object in f variable
             print(f"Saving details to file: {details}")
+            print(json.dumps(details,))
             f.write(json.dumps(details)) # write the json.dumps(details) to the details.txt file , json.dumps() returns a string containing the JSON representation of the object passed as an argument to it
 
     def loadWidgetValuesFromFile(self):
@@ -132,7 +135,8 @@ class MainWindow(QWidget):
                     widget.setText(details["todo"][row]) # set the text of the today_edit Qlineedit widget to the value of the todo key
         except FileNotFoundError as error:
             # Create the file since it doesn't exist
-            f = open("details.txt", "w")
+            with open("./details.txt", "w") as f: # open the details.txt file in write mode and store the file object in f variable
+                pass
 
     def closeEvent(self, event):
         """Save widget values when closing the window."""

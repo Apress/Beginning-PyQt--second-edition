@@ -1,0 +1,1 @@
+{"focus": "buralar\t\t\nboi\u015f hep nerelerde", "notes": "nas\u0131l buralar", "todo": ["belki", "nas\u0131\u015fl"]}
