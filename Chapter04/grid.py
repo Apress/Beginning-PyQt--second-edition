@@ -112,15 +112,15 @@ class MainWindow(QWidget):
             details["todo"] = remaining_todo # set the to_do key , value is the remaining_todo list
 
         with open("details.txt", "w") as f: # open the details.txt file in write mode and store the file object in f variable
-            print(f"Saving details to file: {details}")
-            print(json.dumps(details,))
+            #print(f"Saving details to file: {details}")
+            #print(json.dumps(details))
             f.write(json.dumps(details)) # write the json.dumps(details) to the details.txt file , json.dumps() returns a string containing the JSON representation of the object passed as an argument to it
 
     def loadWidgetValuesFromFile(self):
         """Retrieve the user's previous values from the last session."""
         # Check if file exists first
         try:
-            with open("details.txt", "r") as f: # open the details.txt file in read mode and store the file object in f variable
+            with open("details.txt", "r") as f: # open the details.txt file in read mode ,if the file does not exist it will raise an exception
                 details = json.load(f) # load the json.load(f) from the details.txt file , json.load() returns the Python object that was serialized as a JSON string
                 # Retrieve and set values for the widgets
                 self.today_tedit.setText(details["focus"]) # set the text of the today text edit widget to the value of the focus key
@@ -135,7 +135,7 @@ class MainWindow(QWidget):
                     widget.setText(details["todo"][row]) # set the text of the today_edit Qlineedit widget to the value of the todo key
         except FileNotFoundError as error:
             # Create the file since it doesn't exist
-            with open("./details.txt", "w") as f: # open the details.txt file in write mode and store the file object in f variable
+            with open("./details.txt", "w") as f: # open the details.txt file in write mode ,if the file does not exist it will raise an exception
                 pass
 
     def closeEvent(self, event):

@@ -28,14 +28,14 @@ class MainWindow(QMainWindow):
     def setUpMainWindow(self):
         """Create and arrange widgets in the main window."""
         info_label = QLabel("Click on the button and select a fruit.") 
-        info_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        info_label.setAlignment(Qt.AlignmentFlag.AlignCenter) #set text alignment to center
 
         self.images = [
             "images/1_apple.png", "images/2_pineapple.png",
             "images/3_watermelon.png", "images/4_banana.png"]
 
         self.icon_button = QPushButton()
-        self.icon_button.setIcon(QIcon(random.choice(self.images)))
+        self.icon_button.setIcon(QIcon(random.choice(self.images))) #set 
         self.icon_button.setIconSize(QSize(60, 60))
         self.icon_button.clicked.connect(self.changeButtonIcon)
 
@@ -47,13 +47,13 @@ class MainWindow(QMainWindow):
         # Set main layout of window
         container = QWidget()
         container.setLayout(main_v_box)
-        self.setCentralWidget(container)
+        self.setCentralWidget(container) #set up main window and show it 
 
     def changeButtonIcon(self):
         """When the button is clicked, change the icon to 
         a different random icon from the images list."""
         self.icon_button.setIcon(QIcon(random.choice(self.images)))
-        self.icon_button.setIconSize(QSize(60, 60))
+        self.icon_button.setIconSize(QSize(random.randint(20,70), random.randint(20,70)))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv) 

@@ -5,7 +5,7 @@ Featured in "Beginning PyQt - A Hands-on Approach to GUI Programming, 2nd Ed."
 
 # Import necessary modules
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QLabel,
+from PyQt6.QtWidgets import (QApplication, QWidget, QLabel,QDateTimeEdit, QDoubleSpinBox,
     QComboBox, QSpinBox, QHBoxLayout, QVBoxLayout)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
@@ -57,8 +57,8 @@ class MainWindow(QWidget):
         # Create two horizontal layouts for the QComboBox 
         # and QSpinBox widgets
         item1_h_box = QHBoxLayout()
-        item1_h_box.addWidget(food_combo1)
-        item1_h_box.addWidget(self.price_sb1)
+        item1_h_box.addWidget(food_combo1) # Add the QComboBox widget to the horizontal layout
+        item1_h_box.addWidget(self.price_sb1) # Add the QSpinBox widget to the horizontal layout addWidget(self, QWidget, int) ,int is the position of the widget in the layout
 
         item2_h_box = QHBoxLayout()
         item2_h_box.addWidget(food_combo2)
@@ -70,10 +70,10 @@ class MainWindow(QWidget):
 
         # Organize widgets and layouts in the main window
         main_v_box = QVBoxLayout()
-        main_v_box.addWidget(info_label)
-        main_v_box.addLayout(item1_h_box)
-        main_v_box.addLayout(item2_h_box)
-        main_v_box.addWidget(self.totals_label)
+        main_v_box.addWidget(info_label) # Add the info_label to the main vertical layout 
+        main_v_box.addLayout(item1_h_box) # Add the item1_h_box to the main vertical layout 
+        main_v_box.addLayout(item2_h_box) # Add the item2_h_box to the main vertical layout
+        main_v_box.addWidget(self.totals_label) # Add the totals_label to the main vertical layout
 
         # Set the layout for the main window
         self.setLayout(main_v_box)

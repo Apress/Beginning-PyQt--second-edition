@@ -44,35 +44,36 @@ class MainWindow(QWidget):
         name_h_box.addWidget(self.last_name_edit)  # Add the last name edit
 
         # Create additional widgets to be added in the window
-        gender_combo = QComboBox()
+        gender_combo = QComboBox() # Create a combobox like Dropdownlist
         gender_combo.addItems(["Male", "Female"])
 
         self.phone_edit = QLineEdit()
-        self.phone_edit.setInputMask("(999) 999-9999;_")
-        self.phone_edit.textEdited.connect(self.clearText)
+        self.phone_edit.setInputMask("(999) 999-9999;_")# create mask for input
+        self.phone_edit.textEdited.connect(self.clearText) # 
 
-        self.birthdate_edit = QDateEdit()
-        self.birthdate_edit.setDisplayFormat("MM/dd/yyyy")   
-        self.birthdate_edit.setMaximumDate(QDate.currentDate())  
-        self.birthdate_edit.setCalendarPopup(True)
-        self.birthdate_edit.setDate(QDate.currentDate())
+        self.birthdate_edit = QDateEdit() # Create a date edit widget 
+        self.birthdate_edit.setDisplayFormat("MM/dd/yyyy")   # Set the format for the date edit widget 
+        self.birthdate_edit.setMaximumDate(QDate.currentDate())  # Set the maximum date to today's date
+        self.birthdate_edit.setCalendarPopup(True) # Set the calendar pop-up to true .it will display a calendar when the user clicks on the date edit widget.
+        self.birthdate_edit.setDate(QDate.currentDate()) # Set the date to today's date
 
         self.email_edit = QLineEdit()
         self.email_edit.setPlaceholderText("<username>@<domain>.com")
-        reg_opt = QRegularExpression()
+        reg_opt = QRegularExpression() # Create a regular expression object 
         regex = QRegularExpression(
             "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[com]{3}\\b",
-            reg_opt.PatternOption.CaseInsensitiveOption)
-        self.email_edit.setValidator(QRegularExpressionValidator(regex))
-        self.email_edit.textEdited.connect(self.clearText)
+            reg_opt.PatternOption.CaseInsensitiveOption) # Set the regular expression to be case insensitive  "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[com]{3}\\b" is meant to match the email format
+
+        self.email_edit.setValidator(QRegularExpressionValidator(regex)) # Set the validator to the regular expression object
+        self.email_edit.textEdited.connect(self.clearText) # Connect the textEdited signal to the clearText method
 
         extra_info_tedit = QTextEdit()
         
-        self.feedback_label = QLabel()
+        self.feedback_label = QLabel("")
 
         submit_button = QPushButton("SUBMIT")
-        submit_button.setMaximumWidth(140)
-        submit_button.clicked.connect(self.checkFormInformation)
+        submit_button.setMaximumWidth(140) # Set the width of the button to 140 pixels
+        submit_button.clicked.connect(self.checkFormInformation) 
 
         # Create horizontal layout for last row of widgets
         submit_h_box = QHBoxLayout()
@@ -81,34 +82,37 @@ class MainWindow(QWidget):
 
         # Organize widgets and layouts in QFormLayout
         main_form = QFormLayout()
-        main_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
-        main_form.setFormAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        main_form.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
+        main_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow) # Set the field growth policy to all non-fixed fields grow ,it will grow the form to fit the contents of the form layout
+        main_form.setFormAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop) # Set the form alignment to center horizontally and align the form to the top  of the widget
+        main_form.setLabelAlignment(Qt.AlignmentFlag.AlignLeft) #set the label alignment to left
 
-        main_form.addRow(header_label)
-        main_form.addRow("Name", name_h_box)
-        main_form.addRow("Gender", gender_combo)
-        main_form.addRow("Date of Birth", self.birthdate_edit)
-        main_form.addRow("Phone", self.phone_edit)
-        main_form.addRow("Email", self.email_edit)
-        main_form.addRow(QLabel("Comments or Messages"))
-        main_form.addRow(extra_info_tedit)
-        main_form.addRow(submit_h_box)
+        main_form.addRow(header_label) # Add the header label to the form layout ina row (widget)
+        main_form.addRow("Name", name_h_box) # Add the name widgets to the form layout in a row (string, layout)
+        main_form.addRow("Gender", gender_combo) # add name widgets to the form layout in a row (string, widget)
+        main_form.addRow("Date of Birth", self.birthdate_edit) # add name widgets to the form layout in a row (string, widget)
+        main_form.addRow("Phone", self.phone_edit) # add name widgets to the form layout in a row (string, widget)
+        main_form.addRow("Email", self.email_edit) # add name widgets to the form layout in a row (string, widget)
+        main_form.addRow(QLabel("Comments or Messages")) # add label to the form layout in a row (widget)
+        main_form.addRow(extra_info_tedit) # add name widgets to the form layout in a row (widget)
+        main_form.addRow(submit_h_box) # add layout to the form layout in a row (layout)
 
         # Set the layout for the main window
         self.setLayout(main_form)
+    #  end of setUpMainWindow()
 
+    #  Clear the text in the text edit widgets when the user starts typing
     def clearText(self, text):
         """Clear the text for the QLabel that provides feedback."""
         self.feedback_label.clear()
 
+    #  Check the form information and display a message if the form is complete 
     def checkFormInformation(self):
         """Demonstrates a few cases for validating user input."""
         if self.first_name_edit.text() == "" or self.last_name_edit.text() == "":
             self.feedback_label.setText("[INFO] Missing names.")
-        elif self.phone_edit.hasAcceptableInput() == False:
+        elif self.phone_edit.hasAcceptableInput() == False: # Check if the phone number is valid
             self.feedback_label.setText("[INFO] Phone number entered incorrectly.")
-        elif self.email_edit.hasAcceptableInput() == False:
+        elif self.email_edit.hasAcceptableInput() == False: # Check if the email is valid
             self.feedback_label.setText("[INFO] Email entered incorrectly.")
 
 if __name__ == '__main__':
